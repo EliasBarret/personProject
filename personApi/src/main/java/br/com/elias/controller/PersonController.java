@@ -1,6 +1,7 @@
 package br.com.elias.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ public class PersonController {
 	@Autowired
 	private PersonRepository _personRepository;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/persons", method = RequestMethod.GET)
 	public List<Person> Get(){
 		return _personRepository.findAll();
 	}

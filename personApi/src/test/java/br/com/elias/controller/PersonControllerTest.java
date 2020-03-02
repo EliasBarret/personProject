@@ -1,8 +1,10 @@
 package br.com.elias.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -13,14 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Date;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.elias.entity.Person;
-
-
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = PersonController.class)
@@ -39,12 +38,14 @@ public class PersonControllerTest {
 	   Person person = new Person();
        Date date = new Date();
        
+       person.setId(20);
        person.setBirth(date);
        person.setEmail("email@teste.com");
        person.setGender("Masculino");
        person.setName("teste");
        person.setNationality("Brasileiro");
        person.setNaturalness("Olinda");
+       person.setCpf("105.105.400-11");
        
        Mockito.when(personController.post(Mockito.any(Person.class))).thenReturn(person);
        
@@ -53,7 +54,9 @@ public class PersonControllerTest {
                .content(asJsonString(person))
                .contentType(MediaType. APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isCreated());
+               .andExpect(status().isCreated())
+               .andExpect(status().isOk())
+               .andDo(print());
    }
    
    @Test
